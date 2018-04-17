@@ -1,5 +1,5 @@
 # nexsci
-Tools to query data from [NExSci](https://exoplanetarchive.ipac.caltech.edu) database using the API](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html).
+Tools to query data from [NExSci](https://exoplanetarchive.ipac.caltech.edu) database using the [API](https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html).
 
 ## Installation
 ```shell

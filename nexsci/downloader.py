@@ -283,18 +283,50 @@ def get_error(df,param):
     return np.array([float(err1),float(err2)])
 
 
-def query_transit_params(hostname,letter='b',precision=6):
+def query_summary(hostname,letter='b',precision=6,verbose=True):
     '''
-    Query transit parameters of the system:
-    Rp/Rs, t0, p, a/Rs, b, i, e, w;
-    including Teff, logg, [Fe/H]
-    from NExSci database
+    Query basic planet and stellar properties
     '''
     pd.set_option('precision', precision)
     
-    data=query_nexsci(hostname,letter=letter)
+    data=query_nexsci(hostname,letter=letter,verbose=verbose)
     
-    param_names = 'pl_radj,pl_trandep,pl_trandur,pl_tranmid,pl_orbper,pl_orbsmax,pl_imppar,pl_orbincl,pl_orbeccen,st_logg,st_metfe,st_rad,st_teff'.split(',')
+    param_names = 'pl_radj,pl_orbper,pl_orbsmax,pl_imppar,pl_orbincl,pl_orbeccen,st_dens,st_logg,st_metfe,st_rad,st_teff,pl_massj,pl_insol,pl_eqt'.split(',')
+    param_names = sorted(param_names)
+    #select certain params and invert into column
+    value = data[param_names]
+    #add uncertainties
+    
+    err1_names = []
+    err2_names = []
+    for n in param_names:
+        err1_names.append(n+'err1')
+        err2_names.append(n+'err2')
+    
+    err1 = data[err1_names]
+    err2 = data[err2_names]
+    err1.columns = param_names
+    err2.columns = param_names
+    
+    df = value.append([err1,err2]).T 
+    df.columns = ['value','err1','err2']
+    units = 'K,-,Earth flux,Mjup,-,deg,d,au,Rjup,g/cm3,log(cm/s2),Fe/H,Rsun,K'.split(',')
+    df['units'] = units
+    #import pdb; pdb.set_trace()
+    return df
+
+
+def query_transit_params(hostname,letter='b',precision=6,verbose=True):
+    '''
+    Query transit parameters of the system:
+    Rp/Rs, t0, p, a/Rs, b, i, e, (w?)
+    used for transit modeling
+    '''
+    pd.set_option('precision', precision)
+    
+    data=query_nexsci(hostname,letter=letter,verbose=verbose)
+    
+    param_names = 'pl_orbsmax,st_rad,pl_radj,pl_trandep,pl_trandur,pl_tranmid,pl_orbper,pl_imppar,pl_orbincl,pl_orbeccen'.split(',')
     param_names = sorted(param_names)
     #select certain params and invert into column
     value = data[param_names]
@@ -347,20 +379,7 @@ def query_transit_params(hostname,letter='b',precision=6):
     a_s_err2 = (a_err2/Rs_au_err2).s
     a_s_err = utils.quad_err(a_s_err1,a_s_err2)
     
-    dep= df.loc['pl_trandep']
-    t14= df.loc['pl_trandur']
-    t0 = df.loc['pl_tranmid']
-    p  = df.loc['pl_orbper']
-    b  = df.loc['pl_imppar']
-    i  = df.loc['pl_orbincl']
-    e  = df.loc['pl_orbeccen']
-    #stellar params for limb darkening model
-    g = df.loc['st_logg']
-    fe_h = df.loc['st_metfe']
-    teff = df.loc['st_teff']
-    #k ={'value':k, 'err1':kerr1, 'err2':kerr2}
-    #a_s ={'value':a_s, 'err1':a_s_err1, 'err2':a_s_err2}
-    
+    #append calculated values
     k   = pd.Series({'value':k, 'err1':kerr1, 'err2':-kerr2},name='Rp/Rs')
     a_s = pd.Series({'value':a_s, 'err1':a_s_err1, 'err2':-a_s_err2},name='a/Rs')
     
@@ -368,7 +387,9 @@ def query_transit_params(hostname,letter='b',precision=6):
     
     df = df.append(k)
     df = df.append(a_s)
-    idx_names = 'b,ecc,inc[deg],P[d],a[au],Rp[Rj],dep[%],t14[d],t0[d],logg,[Fe/H],Rs[Rsun],Teff,Rp/Rs,a/Rs'.split(',')
-    df.index = idx_names
+    
+    units = '-,-,deg,d,%,d,JD,-,-'.split(',')
+    df = df.drop(['pl_orbsmax','pl_radj','st_rad'])
+    df['units'] = units
     #import pdb; pdb.set_trace()
     return df
