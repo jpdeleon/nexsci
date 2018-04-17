@@ -246,15 +246,17 @@ def download_nexsci(keyword,filename='confirmed_planets.csv',
 
     return df
 
-def query_nexsci(hostname,keyword='all',letter='b',replace=False):
+def query_nexsci(hostname,keyword='all',letter='b',replace=False,verbose=True):
     '''
     query exoplanet system parameters from NExSci database
     '''
-
+    print('Querying {}...\n'.format(hostname))
     if replace:
         df=download_nexsci(keyword=keyword,replace=True)
     else:
         df=download_nexsci(keyword=keyword,replace=False)
+    print('Main reference: {}'.format(df['pl_def_refname'].values[0]))
+    print('Discovery reference: {}\n'.format(df['pl_disc_refname'].values[0]))
 
     q = df.query("pl_hostname == @hostname and pl_letter== @letter")
     
@@ -262,7 +264,10 @@ def query_nexsci(hostname,keyword='all',letter='b',replace=False):
     if len(q)==0:
         print('Query unsuccessful. Check hostname.\nExiting!\n')
         sys.exit()
-
+        
+    link = 'https://exoplanetarchive.ipac.caltech.edu/docs/API_exoplanet_columns.html'
+    if verbose:
+        print('See meaning of columns here:\n{}'.format(link))
     return q
 
 def get_error(df,param):
@@ -278,7 +283,7 @@ def get_error(df,param):
     return np.array([float(err1),float(err2)])
 
 
-def query_transit_params(hostname,letter='b',precision=4):
+def query_transit_params(hostname,letter='b',precision=6):
     '''
     Query transit parameters of the system:
     Rp/Rs, t0, p, a/Rs, b, i, e, w;
@@ -289,7 +294,7 @@ def query_transit_params(hostname,letter='b',precision=4):
     
     data=query_nexsci(hostname,letter=letter)
     
-    param_names = 'pl_radj,pl_trandur,pl_tranmid,pl_orbper,pl_orbsmax,pl_imppar,pl_orbincl,pl_orbeccen,st_logg,st_metfe,st_rad,st_teff'.split(',')
+    param_names = 'pl_radj,pl_trandep,pl_trandur,pl_tranmid,pl_orbper,pl_orbsmax,pl_imppar,pl_orbincl,pl_orbeccen,st_logg,st_metfe,st_rad,st_teff'.split(',')
     param_names = sorted(param_names)
     #select certain params and invert into column
     value = data[param_names]
@@ -342,7 +347,8 @@ def query_transit_params(hostname,letter='b',precision=4):
     a_s_err2 = (a_err2/Rs_au_err2).s
     a_s_err = utils.quad_err(a_s_err1,a_s_err2)
     
-    
+    dep= df.loc['pl_trandep']
+    t14= df.loc['pl_trandur']
     t0 = df.loc['pl_tranmid']
     p  = df.loc['pl_orbper']
     b  = df.loc['pl_imppar']
@@ -362,7 +368,7 @@ def query_transit_params(hostname,letter='b',precision=4):
     
     df = df.append(k)
     df = df.append(a_s)
-    idx_names = 'b,ecc,inc[deg],P[d],a[au],Rp[Rj],t14[d],t0[d],logg,[Fe/H],Rs[Rsun],Teff,Rp/Rs,a/Rs'.split(',')
+    idx_names = 'b,ecc,inc[deg],P[d],a[au],Rp[Rj],dep[%],t14[d],t0[d],logg,[Fe/H],Rs[Rsun],Teff,Rp/Rs,a/Rs'.split(',')
     df.index = idx_names
     #import pdb; pdb.set_trace()
     return df
