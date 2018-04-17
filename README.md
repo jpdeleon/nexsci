@@ -9,4 +9,7 @@ $ conda create -n test && source activate test
 $ cd nexsci
 $ pip install .
 
+## Scripts
+(to be added later)
 
+See notebook/NExSci.ipynb for examples.
