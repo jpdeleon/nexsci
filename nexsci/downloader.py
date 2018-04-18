@@ -283,13 +283,13 @@ def get_error(df,param):
     return np.array([float(err1),float(err2)])
 
 
-def query_summary(hostname,letter='b',precision=6,verbose=True):
+def query_summary(hostname,letter='b',replace=False,precision=6,verbose=True):
     '''
     Query basic planet and stellar properties
     '''
     pd.set_option('precision', precision)
     
-    data=query_nexsci(hostname,letter=letter,verbose=verbose)
+    data=query_nexsci(hostname,letter=letter,replace=replace,verbose=verbose)
     
     param_names = 'pl_radj,pl_orbper,pl_orbsmax,pl_imppar,pl_orbincl,pl_orbeccen,st_dens,st_logg,st_metfe,st_rad,st_teff,pl_massj,pl_insol,pl_eqt'.split(',')
     param_names = sorted(param_names)
@@ -316,7 +316,7 @@ def query_summary(hostname,letter='b',precision=6,verbose=True):
     return df
 
 
-def query_transit_params(hostname,letter='b',precision=6,verbose=True):
+def query_transit_params(hostname,letter='b',replace=False,precision=6,verbose=True):
     '''
     Query transit parameters of the system:
     Rp/Rs, t0, p, a/Rs, b, i, e, (w?)
@@ -324,7 +324,7 @@ def query_transit_params(hostname,letter='b',precision=6,verbose=True):
     '''
     pd.set_option('precision', precision)
     
-    data=query_nexsci(hostname,letter=letter,verbose=verbose)
+    data=query_nexsci(hostname,letter=letter,replace=replace,verbose=verbose)
     
     param_names = 'pl_orbsmax,st_rad,pl_radj,pl_trandep,pl_trandur,pl_tranmid,pl_orbper,pl_imppar,pl_orbincl,pl_orbeccen'.split(',')
     param_names = sorted(param_names)

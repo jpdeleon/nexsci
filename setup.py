@@ -41,7 +41,7 @@ setup(
     long_description=rd("README.md") + "\n\n"
                     + "---------\n\n",
     #package_dir={"nexsci":"nexsci"},
-    #scripts=['scripts/',],
+    scripts=['scripts/query_summary','scripts/query_transit_params'],
     include_package_data=True,
     keywords=['exoplanet','tools','nexsci'],
     classifiers = [
