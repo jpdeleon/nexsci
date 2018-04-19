@@ -215,7 +215,7 @@ def download_nexsci(keyword,filename='confirmed_planets.csv',
     helper function to download data from NExSci:
     http://exoplanetarchive.ipac.caltech.edu/
 
-    See meaning of columns here:
+    See meaning of keywords here:
     https://exoplanetarchive.ipac.caltech.edu/docs/API_exoplanet_columns.html
     '''
     full_path= os.path.join(loc,filename)
@@ -267,7 +267,7 @@ def query_nexsci(hostname,keyword='all',letter='b',replace=False,verbose=True):
         
     link = 'https://exoplanetarchive.ipac.caltech.edu/docs/API_exoplanet_columns.html'
     if verbose:
-        print('See meaning of columns here:\n{}'.format(link))
+        print('See meaning of keywords here:\n{}\n'.format(link))
     return q
 
 def get_error(df,param):
