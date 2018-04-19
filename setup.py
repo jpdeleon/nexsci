@@ -40,12 +40,12 @@ setup(
     description ='A simple tool to query data from NExSci database.',
     long_description=rd("README.md") + "\n\n"
                     + "---------\n\n",
-    #package_dir={"nexsci":"nexsci"},
+    package_dir={"nexsci":"nexsci"},
     scripts=['scripts/query_summary','scripts/query_transit_params'],
     include_package_data=True,
     keywords=['exoplanet','tools','nexsci'],
     classifiers = [
-        'Development Status :: 1 - Development/Test',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering',
         'Programming Language :: Python'

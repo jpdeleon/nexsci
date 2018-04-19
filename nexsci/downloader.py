@@ -255,15 +255,15 @@ def query_nexsci(hostname,keyword='all',letter='b',replace=False,verbose=True):
         df=download_nexsci(keyword=keyword,replace=True)
     else:
         df=download_nexsci(keyword=keyword,replace=False)
-    print('Main reference: {}'.format(df['pl_def_refname'].values[0]))
-    print('Discovery reference: {}\n'.format(df['pl_disc_refname'].values[0]))
 
     q = df.query("pl_hostname == @hostname and pl_letter== @letter")
-    
 
     if len(q)==0:
         print('Query unsuccessful. Check hostname.\nExiting!\n')
         sys.exit()
+
+    print('Main reference: {}'.format(q['pl_def_refname'].values[0]))
+    print('Discovery reference: {}\n'.format(q['pl_disc_refname'].values[0]))
         
     link = 'https://exoplanetarchive.ipac.caltech.edu/docs/API_exoplanet_columns.html'
     if verbose:
