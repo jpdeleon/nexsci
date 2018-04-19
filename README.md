@@ -22,7 +22,8 @@ Discovery reference: Collier Cameron et al. 2007
 
 See meaning of columns here:
 https://exoplanetarchive.ipac.caltech.edu/docs/API_exoplanet_columns.html
-                    value          err1          err2 units
+
+                    value          err1          err2  unit
 pl_imppar    0.000000e+00  1.200000e-01 -1.200000e-01     -
 pl_orbeccen  0.000000e+00           NaN           NaN     -
 pl_orbincl   9.000000e+01  1.300000e+00 -1.300000e+00   deg
@@ -33,7 +34,7 @@ pl_tranmid   2.453913e+06  2.700000e-04 -2.700000e-04    JD
 Rp/Rs        1.036715e-01  2.191888e-03 -3.182085e-03     -
 a/Rs         5.688844e+00  1.095506e-01 -1.577400e-01     -
 
-$ query_summary WASP-2
+(test) $ query_summary WASP-2
 Querying WASP-2...
 
 Main reference: Torres et al. 2008
@@ -41,7 +42,8 @@ Discovery reference: Collier Cameron et al. 2007
 
 See meaning of columns here:
 https://exoplanetarchive.ipac.caltech.edu/docs/API_exoplanet_columns.html
-                   value      err1       err2       units
+
+                   value      err1       err2        unit
 pl_eqt       1304.000000   54.0000  -54.00000           K
 pl_imppar       0.724000    0.0170   -0.02800           -
 pl_insol             NaN       NaN        NaN  Earth flux
@@ -56,5 +58,14 @@ st_logg         4.540000    0.0400   -0.05000  log(cm/s2)
 st_metfe        0.100000    0.2000   -0.20000        Fe/H
 st_rad          0.840000    0.0600   -0.07000        Rsun
 st_teff      5200.000000  200.0000 -200.00000           K
+
+(test) $ query_summary WASP-3
+
+	param				value
+1         dec                         35.6615
+2     st_nglc                               0
+3     st_elon                         283.573
+4     pl_name                         ASP-3 b
+...
 ```
 See also notebook/NExSci.ipynb for other examples.

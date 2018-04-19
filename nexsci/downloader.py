@@ -311,7 +311,7 @@ def query_summary(hostname,letter='b',replace=False,precision=6,verbose=True):
     df = value.append([err1,err2]).T 
     df.columns = ['value','err1','err2']
     units = 'K,-,Earth flux,Mjup,-,deg,d,au,Rjup,g/cm3,log(cm/s2),Fe/H,Rsun,K'.split(',')
-    df['units'] = units
+    df['unit'] = units
     #import pdb; pdb.set_trace()
     return df
 
@@ -390,6 +390,6 @@ def query_transit_params(hostname,letter='b',replace=False,precision=6,verbose=T
     
     units = '-,-,deg,d,%,d,JD,-,-'.split(',')
     df = df.drop(['pl_orbsmax','pl_radj','st_rad'])
-    df['units'] = units
+    df['unit'] = units
     #import pdb; pdb.set_trace()
     return df
