@@ -14,7 +14,7 @@ $ conda create -n test && source activate test
 ```
 ## Scripts
 ```shell
-(test) $ query_transit_params WASP-4
+(test) $ query_transit_params WASP-1
 Querying WASP-1...
 
 Main reference: Maciejewski et al. 2014

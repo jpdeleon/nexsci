@@ -50,6 +50,6 @@ setup(
         'Topic :: Scientific/Engineering',
         'Programming Language :: Python'
         ],
-    install_requires = ['numpy','pandas','astropy','uncertainties'],
+    install_requires = ['numpy','pandas','astropy','uncertainties','lxml'],
     #dependency_links=['https://github.com/dfm/python-bls/tarball/master']
 )
